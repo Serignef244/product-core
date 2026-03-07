@@ -1,5 +1,6 @@
 package sn.isi.l3gl.core.product.service;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.isi.l3gl.core.product.entity.Product;
@@ -17,5 +18,10 @@ public class ProductService {
     @Transactional
     public Product createProduct(Product product) {
         return productRepository.save(product);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Product> listProducts() {
+        return productRepository.findAll();
     }
 }
