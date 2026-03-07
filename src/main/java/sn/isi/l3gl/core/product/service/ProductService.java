@@ -9,6 +9,8 @@ import sn.isi.l3gl.core.product.repository.ProductRepository;
 @Service
 public class ProductService {
 
+    private static final int LOW_STOCK_THRESHOLD = 5;
+
     private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
@@ -31,5 +33,10 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("Product not found: " + productId));
         product.setQuantity(quantity);
         return productRepository.save(product);
+    }
+
+    @Transactional(readOnly = true)
+    public long countLowStockProducts() {
+        return productRepository.countByQuantityLessThanEqual(LOW_STOCK_THRESHOLD);
     }
 }
